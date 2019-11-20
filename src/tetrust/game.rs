@@ -9,12 +9,12 @@ pub struct Game {
 
 impl Game {
     pub fn new() -> Game {
-        Game{
+        Game {
             field: [0; (FIELD_HEIGHT * FIELD_WIDTH) as usize],
         }
     }
 
-    pub fn check_full_lines(&self) -> Vec< u32 > {
+    pub fn check_full_lines(&self) -> Vec<u32> {
         let mut lines_index = Vec::with_capacity(FIELD_HEIGHT as usize);
         // we start from the end
         for i in (FIELD_HEIGHT - 1)..0 {
@@ -25,7 +25,7 @@ impl Game {
                     break;
                 }
             }
-            
+
             if !one_empty {
                 lines_index.push(i);
             }
