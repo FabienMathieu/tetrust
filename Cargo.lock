@@ -39,7 +39,7 @@ dependencies = [
 
 [[package]]
 name = "sfml"
-version = "0.15.1"
+version = "0.15.0"
 dependencies = [
  "bitflags 1.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "csfml-audio-sys 0.5.0",
@@ -57,7 +57,7 @@ version = "0.3.0"
 name = "tetris"
 version = "0.1.0"
 dependencies = [
- "sfml 0.15.1",
+ "sfml 0.15.0",
 ]
 
 [[package]]

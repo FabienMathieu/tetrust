@@ -8,14 +8,14 @@ fn main() {
 
     for i in 1..tetrust::game::FIELD_WIDTH {
         vertices.push(Vertex::new(
-            ((i * tetrust::game::TETRO_SIZE) as f32, 0.0),
+            ((i as u32 * tetrust::game::TETRO_SIZE) as f32, 0.0),
             Color::BLACK,
             Default::default(),
         ));
         vertices.push(Vertex::new(
             (
-                (i * tetrust::game::TETRO_SIZE) as f32,
-                (tetrust::game::FIELD_HEIGHT * tetrust::game::TETRO_SIZE) as f32,
+                (i as u32 * tetrust::game::TETRO_SIZE) as f32,
+                (tetrust::game::FIELD_HEIGHT as u32 * tetrust::game::TETRO_SIZE) as f32,
             ),
             Color::BLACK,
             Default::default(),
@@ -24,14 +24,14 @@ fn main() {
 
     for i in 1..tetrust::game::FIELD_HEIGHT {
         vertices.push(Vertex::new(
-            (0.0, (i * tetrust::game::TETRO_SIZE) as f32),
+            (0.0, (i as u32 * tetrust::game::TETRO_SIZE) as f32),
             Color::BLACK,
             Default::default(),
         ));
         vertices.push(Vertex::new(
             (
-                (tetrust::game::FIELD_WIDTH * tetrust::game::TETRO_SIZE) as f32,
-                (i * tetrust::game::TETRO_SIZE) as f32,
+                (tetrust::game::FIELD_WIDTH as u32 * tetrust::game::TETRO_SIZE) as f32,
+                (i as u32 * tetrust::game::TETRO_SIZE) as f32,
             ),
             Color::BLACK,
             Default::default(),
