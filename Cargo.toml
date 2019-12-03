@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 sfml = { path = "../rust-sfml" }
+factory = "0.1.2"

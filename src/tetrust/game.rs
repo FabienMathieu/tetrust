@@ -1,3 +1,5 @@
+use factory::{ParameterizedFactory};
+
 pub const FIELD_WIDTH: u8 = 10;
 pub const FIELD_HEIGHT: u8 = 20;
 pub const TETRO_SIZE: u32 = 20;
@@ -34,6 +36,44 @@ impl Game {
     }
 }
 
+struct TetrominoFactory {
+    tetrominos: Vec< Tetromino >,
+}
+
+impl TetrominoFactory {
+    fn new() -> TetrominoFactory {
+        TetrominoFactory {
+            tetrominos: Vec::new(),
+        }
+    }
+
+    fn registerTetromino(self: &mut TetrominoFactory, tetros: [i16; 4]) {
+        let color = 0xFF0000FF;
+        let mut field: [[u32; 16]; 4] = [[0; 16]; 4];
+        for index in 0..3 {
+            let mut local_tetros = tetros[index];
+            for i in 0..15 {
+                local_tetros = local_tetros << i;
+                field[index][i] = local_tetros as u32 & 0x1;
+            }
+        }
+
+        let tetromino = Tetromino::new(field, color);
+        self.tetrominos.push(tetromino);
+    }
+}
+
+impl ParameterizedFactory for TetrominoFactory {
+    type Item = Tetromino;
+
+    type Parameter = u8;
+
+    fn create(self: &TetrominoFactory, param: Self::Parameter) -> Self::Item {
+        return self.tetrominos[param as usize].clone();
+    }
+}
+
+#[derive(Clone)]
 struct Tetromino {
     field: [[u32; 16]; 4],
     color: u32,
@@ -41,10 +81,11 @@ struct Tetromino {
 }
 
 impl Tetromino {
-    fn new() -> Tetromino {
+
+    fn new(field: [[u32; 16]; 4], color: u32) -> Tetromino {
         Tetromino {
-            field: [[0; 16]; 4],
-            color: 0xFF0000FF,
+            field: field,
+            color: color,
             current_rotation: 0,
         }
     }

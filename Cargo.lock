@@ -38,6 +38,11 @@ dependencies = [
 ]
 
 [[package]]
+name = "factory"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "sfml"
 version = "0.15.0"
 dependencies = [
@@ -57,6 +62,7 @@ version = "0.3.0"
 name = "tetris"
 version = "0.1.0"
 dependencies = [
+ "factory 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "sfml 0.15.0",
 ]
 
@@ -67,4 +73,5 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [metadata]
 "checksum bitflags 1.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693"
+"checksum factory 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)" = "73a3579e5ac964dd11bed8ba3932ee51b48ce652ee12e49c61a78a268bbc9b2c"
 "checksum widestring 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "effc0e4ff8085673ea7b9b2e3c73f6bd4d118810c9009ed8f1e16bd96c331db6"
