@@ -87,7 +87,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "sfml"
-version = "0.15.1"
+version = "0.15.0"
 dependencies = [
  "bitflags 1.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "csfml-audio-sys 0.5.0",
@@ -107,7 +107,7 @@ version = "0.1.0"
 dependencies = [
  "factory 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.5.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "sfml 0.15.1",
+ "sfml 0.15.0",
 ]
 
 [[package]]
