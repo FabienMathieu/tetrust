@@ -1,22 +1,58 @@
+use crate::tetrust::pieces::TETROS;
 use factory::{ParameterizedFactory};
+use rand::Rng;
 
-pub const FIELD_WIDTH: u8 = 10;
-pub const FIELD_HEIGHT: u8 = 20;
+pub const FIELD_WIDTH: u32 = 10;
+pub const FIELD_HEIGHT: u32 = 20;
 pub const TETRO_SIZE: u32 = 20;
-pub const BLOCKS_NUMBER: u8 = (FIELD_WIDTH - 1) * 2 + (FIELD_HEIGHT - 1) * 2;
+pub const BLOCKS_NUMBER: u32 = (FIELD_WIDTH - 1) * 2 + (FIELD_HEIGHT - 1) * 2;
 
 pub struct Game {
     field: [u32; (FIELD_HEIGHT * FIELD_WIDTH) as usize],
+    factory: TetrominoFactory,
+    current_tetromino: Tetromino,
+    current_position: Point,
 }
 
 impl Game {
     pub fn new() -> Game {
         Game {
             field: [0; (FIELD_HEIGHT * FIELD_WIDTH) as usize],
+            factory: TetrominoFactory::new(),
+            current_tetromino: Tetromino::default(),
+            current_position: Point::default(),
         }
     }
 
-    pub fn check_full_lines(&self) -> Vec<u8> {
+    pub fn get_field(self: &Game) -> &[u32; (FIELD_HEIGHT * FIELD_WIDTH) as usize] {
+        return &self.field;
+    }
+
+    pub fn init(self: &mut Game) {
+        for i in 0..7 {
+            self.factory.register_tetromino(TETROS[i]);
+        }
+    }
+    
+    pub fn update(self: &mut Game) {
+        let tetros_index = rand::thread_rng().gen_range(0, 7);
+        let tetros = self.factory.create(tetros_index);
+        self.current_tetromino = tetros;
+        self.current_position = Point::new(FIELD_WIDTH / 2 - 2, 0);
+        self.draw();
+    }
+
+    fn draw(self: &mut Game) {
+        let tetros: &Tetromino = &self.current_tetromino;
+        let xy: &Point = &self.current_position;
+        for i in 0..4 {
+            for j in 0..4 {
+                self.field[((xy.y + i as u32) * FIELD_WIDTH + (xy.x + j as u32)) as usize] = tetros.field[tetros.current_rotation as usize][i * 4 + j];
+            }
+        }
+    }
+
+    pub fn check_full_lines(&self) -> Vec<u32> {
         let mut lines_index = Vec::with_capacity(FIELD_HEIGHT as usize);
         // we start from the end
         for i in (FIELD_HEIGHT - 1)..0 {
@@ -47,16 +83,16 @@ impl TetrominoFactory {
         }
     }
 
-    fn registerTetromino(self: &mut TetrominoFactory, tetros: [i16; 4]) {
+    fn register_tetromino(self: &mut TetrominoFactory, tetros: [i16; 4]) {
         let color = 0xFF0000FF;
         let mut field: [[u32; 16]; 4] = [[0; 16]; 4];
-        for index in 0..3 {
-            let mut local_tetros = tetros[index];
-            for i in 0..15 {
-                local_tetros = local_tetros << i;
+        for index in 0..4 {
+            let tetros_value = tetros[index];
+            for i in 0..16 {
+                let local_tetros = tetros_value >> (15 - i); // From the "beginning" of the number
                 field[index][i] = local_tetros as u32 & 0x1;
             }
-        }
+        }        
 
         let tetromino = Tetromino::new(field, color);
         self.tetrominos.push(tetromino);
@@ -67,7 +103,6 @@ impl ParameterizedFactory for TetrominoFactory {
     type Item = Tetromino;
 
     type Parameter = u8;
-
     fn create(self: &TetrominoFactory, param: Self::Parameter) -> Self::Item {
         return self.tetrominos[param as usize].clone();
     }
@@ -89,23 +124,22 @@ impl Tetromino {
             current_rotation: 0,
         }
     }
+}
 
-    fn draw(self: &Tetromino, game: &mut Game, xy: Point) {
-        for i in 0..3 {
-            for j in 0..3 {
-                game.field[(xy.y * FIELD_WIDTH + xy.x) as usize] = self.field[self.current_rotation as usize][i * 4 + j];
-            }
-        }
+impl Default for Tetromino {
+    fn default() -> Tetromino {
+        let empty : [[u32; 16]; 4] = [[0; 16]; 4];
+        Tetromino::new(empty, 0x00000000)
     }
 }
 
 struct Point {
-    x: u8,
-    y: u8,
+    x: u32,
+    y: u32,
 }
 
 impl Point {
-    fn new(px: u8, py: u8) -> Point {
+    fn new(px: u32, py: u32) -> Point {
         Point {
             x: px,
             y: py,
