@@ -64,6 +64,15 @@ fn main() {
                 | Event::KeyReleased {
                     code: Key::Escape, ..
                 } => window.close(),
+                Event::KeyReleased {
+                    code: Key::Left, ..
+                } => game.move_piece_left(),
+                Event::KeyReleased {
+                    code: Key::Right, ..
+                } => game.move_piece_right(),
+                Event::KeyReleased {
+                    code: Key::Space, ..
+                } => game.rotate_piece(),
                 _ => (),
             };
         }

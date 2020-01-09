@@ -52,6 +52,49 @@ impl Game {
         }
     }
 
+    pub fn move_piece_left(self: &mut Game) {
+        // clean old place
+        self.clean_old_position();
+        // move one case to left
+        if self.current_position.x > 0 {
+            self.current_position.x -= 1;
+        }
+        // redraw
+        self.draw();
+    }
+
+    pub fn move_piece_right(self: &mut Game) {
+        // clean old place
+        self.clean_old_position();
+        // move one case to right
+        if self.current_position.x < (FIELD_WIDTH - 4) {
+            self.current_position.x += 1;
+        }
+        // redraw
+        self.draw();
+    }
+
+    pub fn rotate_piece(self: &mut Game) {
+        // clean old place
+        self.clean_old_position();
+        // change rotation
+        self.current_tetromino.current_rotation += 1;
+        if self.current_tetromino.current_rotation == 4 {
+            self.current_tetromino.current_rotation = 0;
+        }
+        // redraw
+        self.draw();
+    }
+
+    fn clean_old_position(self: &mut Game) {
+        let xy: &Point = &self.current_position;
+        for i in 0..4 {
+            for j in 0..4 {
+                self.field[((xy.y + i as u32) * FIELD_WIDTH + (xy.x + j as u32)) as usize] = 0;
+            }
+        }
+    }
+
     pub fn check_full_lines(&self) -> Vec<u32> {
         let mut lines_index = Vec::with_capacity(FIELD_HEIGHT as usize);
         // we start from the end
